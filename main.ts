@@ -1,3 +1,9 @@
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (jump < 1) {
+        jump += 1
+        mySprite.vy = -170
+    }
+})
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (!(mySprite.isHittingTile(CollisionDirection.Top))) {
         jump = 0
@@ -5,28 +11,39 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (mySprite.isHittingTile(CollisionDirection.Top)) {
         if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile`)) {
             tiles.setTileAt(tiles.getTileLocation(9, 12), assets.tile`myTile0`)
-            what_powerup(powerList)
-            mySprite.ay = 170
-            timer.after(6000, function () {
-                mySprite.ay = 370
-            })
+            what_powerup(text_list)
+            if (powerup == 1) {
+                info.changeLifeBy(1)
+            }
         }
-    }
-})
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (jump < 1) {
-        jump += 1
-        mySprite.vy = -170
     }
 })
 function what_powerup (list: number[]) {
     for (let value of list) {
         if (info.life() == 1) {
             list.unshift(value)
+            if (loopcount == 0) {
+                break;
+            }
+        } else if (info.life() == 2) {
+            list.unshift(value)
+            loopcount += 1
+            if (loopcount == 3) {
+                break;
+            }
+        } else if (info.life() == 3) {
+            list.unshift(value)
+            loopcount += 1
+            if (loopcount == 4) {
+                break;
+            }
         }
     }
+    powerup = list._pickRandom()
 }
-let powerList: number[] = []
+let powerup = 0
+let loopcount = 0
+let text_list: number[] = []
 let jump = 0
 let mySprite: Sprite = null
 scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
@@ -151,129 +168,7 @@ scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
     6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
     6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
     `)
-scroller.setLayerImage(scroller.BackgroundLayer.Layer1, img`
-    777776777777777777776777776666777777777667777777777776667777677777777777777777777777777777776777777777677777777766666677677777767777777777666666677776777776777
-    777776777677777777776777777767666777777777777777767777767777677767777777777777766777777777776777777777677777777677767777677777767777777777777777777767777776777
-    777777777777777777776677777766677666777777777776677777766677666777777777776677777777777777777677777777677777776666677776777777767777777777777677777776777766777
-    777777667777777777776766777777777777666667777767776777777777777666667777767777777776777777777777777777777776666777777776777777777777777777777677777776777766777
-    777777766777777776777777776677776777667777777777677677777777777777776666677777777777677777777777777777766667767777777776777777777777777777777777777767777767777
-    777777776777777667777777766777776777777777777776767777777777777777777777667777777777766777777777766666677777677777777776777777777777777777777777777667777767777
-    776677777677767777777777677777767777777777667776676776777777777777777777776666777766777666677676677777777777777777777776776677777777767777777777777777767677777
-    666777777777667777777777777777767777767766677777777666777777777777777777777776666667777777766667777777777777777777777676666777777777667777777777777777677677767
-    767766777667766777766777777777667777766776776677766676677776677777777777777776676677667776677667777667777777777777777667767766777667766777766777777777676777766
-    666667767766766776766777777776667776676666666776776676677676677777777777777667666666677677667667767667777777777777766766666667767766766776766777777777776776676
-    666677766766666766667777777777767666677666667776676666676666777777777777766667766666777667666667666677777777777776666776666677766766666766667777777777776666677
-    666676666666676666677767777776667776667666667666666667666667776777777666777666766666766666666766666777677777766677766676666676666666676666677767777776667776667
-    666666666666776677666667766677766777666666666666666677667766666776667776677766666666666666667766776666677666777667776666666666666666776677666667766677766777666
-    666666666666766667766677677667766666666666666666666676666776667767766776666666666666666666667666677666776776677666666666666666666666766667766677677667766666666
-    6b666666666666666666667667776676666666666b666666666666666666667667776676666666666b666666666666666666667667776676666666666b6666666666666666666676677766766666666
-    6b6666666666666666666666b6776666666666666b6666666666666666666666b6776666666666666b6666666666666666666666b6776666666666666b6666666666666666666666b67766666666666
-    6b6666666666666666666666bb676666666666666b6666666666666666666666bb676666666666666b6666666666666666666666bb676666666666666b6666666666666666666666bb6766666666666
-    6b6666666.bb66666666..66bbb66666666666666b6666666.bb66666666..66bbb66666666666666b6666666.bb66666666..66bbb66666666666666b6666666.bb66666666..66bbb666666666666
-    6b666666..dbb666666dd.666bb66666666666666b666666...bb666666...666bb66666666666666b666666...bb666666...666bb66666666666666b666666...bb666666...666bb666666666666
-    bb666.66..66bbb6.666d..66bb6666666666666bb666.66..66bbb6.666d..66bb6666666666666bb666.66..66bbb6.666d..66bb6666666666666bb666.66..66bbb6.666d..66bb666666666666
-    bb666d.66.6d.bbb..66d..66bbb666666666666bb666d.66.6d.bbb..66d..66bbb666666666666bb666d.66.6d.bbb..66d..66bbb666666666666bb666d.66.6d.bbb..66d..66bbb66666666666
-    bb66dd....d..6bb..ddd.6666bb666666666666bb66dd....d..6bb..ddd.6666bb666666666666bb66dd....d..6bb..ddd.6666bb666666666666bb66dd....d..6bb..ddd.6666bb66666666666
-    bb666d....d..6bb..dd..66.dbbb66.6666666bbb666d....d..6bb..dd..66.dbbb66.6666666bbb666d....d..6bb..dd..66.dbbb66.6666666bbb666d....d..6bb..dd..66.dbbb66.6666666
-    bbdd6d....d...bbb.dd.....6bbb66...66666bbbdd6d....d...bbb.dd.....6bbb66...66666bbbdd6d....d...bbb.dd.....6bbb66...66666bbbdd6d....d...bbb.dd.....6bbb66...66666
-    bb6ddd....d....bb.dd....d6bbb.6..666666bbb6ddd....d....bb.dd....d6bbb.6..666666bbb6ddd....d....bb.dd....d6bbb.6..666666bbb6ddd....d....bb.dd....d6bbb.6..666666
-    bb6ddd.........bbbdd....d.bbb....66..66bbb6ddd...d.....bbbdd....d.bbb....66..66bbb6ddd...d.....bbbdd....d.bbb....66..66bbb6ddd...d.....bbbdd....d.bbb....66..66
-    bbdddd..........bbdd....d.bbbb....d...6bbbdddd...d......bbdd....d.bbbb....d...6bbbdddd...d......bbdd....d.bbbb....d...6bbbdddd...d......bbdd....d.bbbb....d...6
-    b.dddd...........bb....dd.bbbb....d....bb.dddd..dd.......bb....dd.bbbb....d....bb.dddd..dd.......bb....dd.bbbb....d....bb.dddd..dd.......bb....dd.bbbb....d....
-    b..ddddd.........bbb...d...bbb....d....bb..ddddd.........bbb...d...bbb....d....bb..ddddd.........bbb...d...bbb....d....bb..ddddd.........bbb...d...bbb....d....
-    b..dddd..........dbbbbdd...bbb....d...bbb..dddd..........dbbbbdd...bbb....d...bbb..dddd..........dbbbbdd...bbb....d...bbb..dddd..........dbbbbdd...bbb....d...b
-    b..ddd...........ddbbbb....bbbb...d...bbb..ddd...........ddbbbb....bbbb...d...bbb..ddd...........ddbbbb....bbbb...d...bbb..ddd...........ddbbbb....bbbb...d...b
-    b..ddd...........ddbbbbbb..bbbb...d...bbb..ddd...........ddbbbbbb..bbbb...d...bbb..ddd...........ddbbbbbb..bbbb...d...bbb..ddd...........ddbbbbbb..bbbb...d...b
-    ....dd..........ddddbbbbbbbbbbbb...d..bb....dd..........ddddbbbbbbbbbbbb...d..bb....dd..........ddddbbbbbbbbbbbb...d..bb....dd..........ddddbbbbbbbbbbbb...d..b
-    ....ddd.........dd.....bbbbbbbbb...d..bb....ddd.........dd.....bbbbbbbbb...d..bb....ddd.........dd.....bbbbbbbbb...d..bb....ddd.........dd.....bbbbbbbbb...d..b
-    ....dddd........dd......bbbbbbbb...d.bbb....dddd........dd......bbbbbbbb...d.bbb....dddd........dd......bbbbbbbb...d.bbb....dddd........dd......bbbbbbbb...d.bb
-    ....ddddd......ddd.......bbbbbbb...dbbbb....ddddd......ddd.......bbbbbbb...dbbbb....ddddd......ddd.......bbbbbbb...dbbbb....ddddd......ddd.......bbbbbbb...dbbb
-    d.....ddddd....ddd.........bbbbb...bbbbdd.....ddddd....ddd.........bbbbb...bbbbdd.....ddddd....ddd.........bbbbb...bbbbdd.....ddddd....ddd.........bbbbb...bbbb
-    d.....ddddddd.ddd..........bbbbb..bbbb..d.....ddddddd.ddd..........bbbbb..bbbb..d.....ddddddd.ddd..........bbbbb..bbbb..d.....ddddddd.ddd..........bbbbb..bbbb.
-    d......dddddddddd..........bbbbb..bbb...d......dddddddddd..........bbbbb..bbb...d......dddddddddd..........bbbbb..bbb...d......dddddddddd..........bbbbb..bbb..
-    d......ddddddddd...........bbbbb..bb....d......ddddddddd...........bbbbb..bb....d......ddddddddd...........bbbbb..bb....d......ddddddddd...........bbbbb..bb...
-    dd.....ddddddd.............bbbbb..bbd...dd.....ddddddd.............bbbbb..bbd...dd.....ddddddd.............bbbbb..bbd...dd.....ddddddd.............bbbbb..bbd..
-    .dd....dddddd..............bbbbb..bbd....dd....dddddd..............bbbbb..bbd....dd....dddddd..............bbbbb..bbd....dd....dddddd..............bbbbb..bbd..
-    .ddd...dddddd..............bbbbb.bbbdd...ddd...dddddd..............bbbbb.bbbdd...ddd...dddddd..............bbbbb.bbbdd...ddd...dddddd..............bbbbb.bbbdd.
-    ...dddddddddd.............bbbbbb.bbb.d.....dddddddddd.............bbbbbb.bbb.d.....dddddddddd.............bbbbbb.bbb.d.....dddddddddd.............bbbbbb.bbb.d.
-    ...dddddddddd.............bbbbbbbbb..d.....dddddddddd.............bbbbbbbbb..d.....dddddddddd.............bbbbbbbbb..d.....dddddddddd.............bbbbbbbbb..d.
-    .....dddddddd.............bbbbbbbbb..dd......dddddddd.............bbbbbbbbb..dd......dddddddd.............bbbbbbbbb..dd......dddddddd.............bbbbbbbbb..dd
-    .......dddddd............bbbbbbbbb....dd.......dddddd............bbbbbbbbb....dd.......dddddd............bbbbbbbbb....dd.......dddddd............bbbbbbbbb....d
-    d.......ddddd............bbbbbbbbb.....dd.......ddddd............bbbbbbbbb.....dd.......ddddd............bbbbbbbbb.....dd.......ddddd............bbbbbbbbb.....
-    d.......ddddd............bbbbbbbb......dd.......ddddd............bbbbbbbb......dd.......ddddd............bbbbbbbb......dd.......ddddd............bbbbbbbb......
-    d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb......
-    d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb......
-    d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb......
-    d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb.......d.......ddddd...........bbbbbbbbb......
-    dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb.......
-    dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb........dd......ddddd...........bbbbbbbb.......
-    dd......ddddd...........bbbbbbbb.......ddd......ddddd...........bbbbbbbb.......ddd......ddddd...........bbbbbbbb.......ddd......ddddd...........bbbbbbbb.......
-    d.......ddddd...........bbbbbbbb.......dd.......ddddd...........bbbbbbbb.......dd.......ddddd...........bbbbbbbb.......dd.......ddddd...........bbbbbbbb.......
-    d.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......
-    d.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......dd.......dddddd..........bbbbbbbb.......
-    d.......dddddd..........bbbbbbb........dd.......dddddd..........bbbbbbb........dd.......dddddd..........bbbbbbb........dd.......dddddd..........bbbbbbb........
-    ........dddddd..........bbbbbbb.......dd........dddddd..........bbbbbbb.......dd........dddddd..........bbbbbbb.......dd........dddddd..........bbbbbbb.......d
-    ........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......dd
-    ........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......ddd........dddddd..........bbbbbbb......dd
-    ........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd
-    ........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd
-    ........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd.........ddddddd.........bbbbbbb.....ddd
-    ........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd
-    ........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd.........dddddddd........bbbbbbb....dddd
-    ........dddddddd........bbbbbbb....ddd..........dddddddd........bbbbbbb....ddd..........dddddddd........bbbbbbb....ddd..........dddddddd........bbbbbbb....ddd.
-    .........dddddddd......bbbbbbbb....ddd...........dddddddd......bbbbbbbb....ddd...........dddddddd......bbbbbbbb....ddd...........dddddddd......bbbbbbbb....ddd.
-    .........dddddddd......bbbbbbbbddddddddd.........dddddddd......bbbbbbbbddddddddd.........dddddddd......bbbbbbbbddddddddd.........dddddddd......bbbbbbbbdddddddd
-    dddd.....dddddddd......bbbbbbbbbdddddddddddd.....dddddddd......bbbbbbbbbdddddddddddd.....dddddddd......bbbbbbbbbdddddddddddd.....dddddddd......bbbbbbbbbddddddd
-    ddddddd..ddddddddd...ddbbbbbbbbbddddddddddddddd..ddddddddd...ddbbbbbbbbbddddddddddddddd..ddddddddd...ddbbbbbbbbbddddddddddddddd..ddddddddd...ddbbbbbbbbbddddddd
-    dddddddddddddddddd.ddddbbbbbbbbbdddddddddddddddddddddddddd.ddddbbbbbbbbbdddddddddddddddddddddddddd.ddddbbbbbbbbbdddddddddddddddddddddddddd.ddddbbbbbbbbbddddddd
-    dddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbdddddd
-    dddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbddddddddddddddddddddddddddddddbbbbbbbbbbdddddd
-    ddddddddddddddddddddddbbbbbbbbbbbdddddddddddddddddddddddddddddbbbbbbbbbbbdddddddddddddddddddddddddddddbbbbbbbbbbbdddddddddddddddddddddddddddddbbbbbbbbbbbdddddd
-    ddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddd
-    ddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddd
-    ddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddd
-    ddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddddddddddddddddddddddddddbbbbbbbbbbbbddddd
-    dddddddddddddddddd7777777777bbbbbbdddddddddddddddddddddddd7777777777bbbbbbdddddddddddddddddddddddd7777777777bbbbbbdddddddddddddddddddddddd7777777777bbbbbbddddd
-    ddddddddddddd77777777777777777777bddddddddddddddddddd77777777777777777777bddddddddddddddddddd77777777777777777777bddddddddddddddddddd77777777777777777777bddddd
-    dddddddddd7777777777777777777777777ddddddddddddddd7777777777777777777777777ddddddddddddddd7777777777777777777777777ddddddddddddddd7777777777777777777777777dddd
-    ddddddd777777777777777777777777777777dddddddddd777777777777777777777777777777dddddddddd777777777777777777777777777777dddddddddd777777777777777777777777777777dd
-    dddd77777777777777777777777777777777777ddddd77777777777777777777777777777777777ddddd77777777777777777777777777777777777ddddd77777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    7777777777777ddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777dddddddd77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    7777777ddddddddddddd7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777dddddddddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777dddddddddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777dddddddddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777ddddddddddddddd7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777ddd77ddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777777777777777777777777777777777777777777777777777777777777777777ddddddd777777777777777777777777777777777777777777777777777777777777777777777777
-    7777777777777777777777777777777777777777777777777777777777777777777777777777777dddddddddd7777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777777777777777777777777777777777777777777777d77777777777777777dddddddddddddd77777777777777777777777777777777777777777777777777777777777777777777
-    7777777777777777777777777777777777777777777777777777777777dddd77777777777777dddddddddddddddd7777777777777777777777777777777777777777777777777777777777777777777
-    7777777777777777777777777777777777777777777777777777777777ddddd7777777777777dddddddddddddddd7777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777777777777777777777777777777777777777777ddddddd777777777777ddddddddddddddddddd77777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777ddddd7777777777777dddddddddddddddddddd7777777777777777777777777777777777777777777777777777777777777777
-    7777777777777777777777777777777777777777777777777777777777777777777777777777dddddddddddddddddddd777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777777777777777777777777777777777777777777777777777777777777777ddddddddddddddddddd777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777ddddddddddddddddd7777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777777777777777777777777777777777777777777777777777777777777777777777ddddd77777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777777ddddd77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    777777777777777dddddddd7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777dddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777dddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777ddddddddddddd777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-    77777777777777ddddddddddddd77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777dd77777777777777777777777777777777777777777
-    `)
-scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.BothDirections, scroller.BackgroundLayer.Layer0)
+scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.OnlyHorizontal, scroller.BackgroundLayer.Layer0)
 scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.OnlyHorizontal, scroller.BackgroundLayer.Layer1)
 tiles.setCurrentTilemap(tilemap`level2`)
 mySprite = sprites.create(img`
@@ -294,7 +189,7 @@ mySprite = sprites.create(img`
     . . . . . . f f f f f f . . . . 
     . . . . . . . f f f . . . . . . 
     `, SpriteKind.Player)
-info.setLife(3)
+info.setLife(1)
 mySprite.ay = 370
 controller.moveSprite(mySprite, 100, 0)
 scene.cameraFollowSprite(mySprite)
@@ -304,13 +199,11 @@ let p1 = 1
 let p2 = 2
 let p3 = 3
 let p4 = 4
-// - p1 is for 1 live
-// - p3 and below is for 2 
-//   lives
-// - p4 to p2 is for 3 lives
-powerList = [
+let powerlist: number[] = []
+text_list = [
 p1,
 p2,
 p3,
 p4
 ]
+loopcount = 0

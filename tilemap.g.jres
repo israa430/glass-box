@@ -22,6 +22,24 @@
         "tilemapTile": true,
         "displayName": "myTile0"
     },
+    "tile4": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAABAAAAAAAAAABQBAAAAAABAEQEAAAAAAEARAQAAAAAAFBERAAAAAAAUEREAAAAAABQREQAAAAAAEBERAAAAAAAQEREAAAAAAAAREQAAAAAAABERAAAAAAAAEREAAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "myTile2"
+    },
+    "tile5": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAABAAAAAAAAABEBAAAAAAAQEQEAAAAAABARAQAAAAAAEREBAAAAAAAREREAAAAAABEREQAAAAAAERERAAAAAAAREREAAAAAABQREQAAAAAAQBERAAAAAABAEQEAAAAAAAAUAQAAAAAAAEQAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "myTile3"
+    },
+    "tile6": {
+        "data": "hwQQABAAAAAACACAAAAAAACIiAgAAAAAAAgAAACACACAiAAAiIgAAACIiIgAAAgAAIgAAACICAAAiIiICAgAAACICACIAAAAAIgAAAAAAAAAiIgIAAAAAICAAICIiAgAgIAAAACACACAAAAAAAgAAIAIAIiICAAAAIiIAACIAAAACAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "myTile4"
+    },
     "level1": {
         "id": "level1",
         "mimeType": "application/mkcd-tilemap",
@@ -54,8 +72,7 @@
         "tileset": [
             "myTiles.transparency16",
             "myTiles.tile1",
-            "sprites.builtin.forestTiles2",
-            "myTiles.tile2"
+            "sprites.builtin.forestTiles2"
         ],
         "displayName": "level2"
     },
