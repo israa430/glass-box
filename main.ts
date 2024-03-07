@@ -14,25 +14,39 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
             what_powerup(text_list)
             if (powerup == 1) {
                 info.changeLifeBy(1)
+                mySprite.sayText("extra life")
+            }
+            if (powerup == 2) {
+                info.changeLifeBy(1)
+                mySprite.ay = 160
+                mySprite.sayText("extra life & super jump")
+            }
+            if (powerup == 3) {
+                info.changeLifeBy(1)
+                mySprite.sayText("extra life & move faster")
+            }
+            if (powerup == 4) {
+                mySprite.sayText("fourth")
             }
         }
     }
 })
 function what_powerup (list: number[]) {
+    powerlist.shift()
     for (let value of list) {
         if (info.life() == 1) {
-            list.unshift(value)
+            powerlist.unshift(value)
             if (loopcount == 0) {
                 break;
             }
         } else if (info.life() == 2) {
-            list.unshift(value)
+            powerlist.unshift(value)
             loopcount += 1
             if (loopcount == 3) {
                 break;
             }
         } else if (info.life() == 3) {
-            list.unshift(value)
+            powerlist.unshift(value)
             loopcount += 1
             if (loopcount == 4) {
                 break;
@@ -44,6 +58,7 @@ function what_powerup (list: number[]) {
 let powerup = 0
 let loopcount = 0
 let text_list: number[] = []
+let powerlist: number[] = []
 let jump = 0
 let mySprite: Sprite = null
 scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
@@ -189,7 +204,7 @@ mySprite = sprites.create(img`
     . . . . . . f f f f f f . . . . 
     . . . . . . . f f f . . . . . . 
     `, SpriteKind.Player)
-info.setLife(1)
+info.setLife(2)
 mySprite.ay = 370
 controller.moveSprite(mySprite, 100, 0)
 scene.cameraFollowSprite(mySprite)
@@ -199,7 +214,7 @@ let p1 = 1
 let p2 = 2
 let p3 = 3
 let p4 = 4
-let powerlist: number[] = []
+powerlist = [p1]
 text_list = [
 p1,
 p2,
