@@ -11,7 +11,7 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (mySprite.isHittingTile(CollisionDirection.Top)) {
         if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile`)) {
             tiles.setTileAt(tiles.getTileLocation(9, 12), assets.tile`myTile0`)
-            what_powerup(text_list)
+            What_powerup(info.life())
             if (powerup == 1) {
                 info.changeLifeBy(1)
                 mySprite.sayText("+1 heart")
@@ -97,8 +97,22 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         }
     }
 })
+function What_powerup (health: number) {
+    for (let index = 0; index < health; index++) {
+        random = randint(1, 4)
+        if (random == 1) {
+            powerup = list.removeAt(0)
+        } else if (random == 2) {
+            powerup = list.removeAt(1)
+        } else if (random == 3) {
+            powerup = list.removeAt(2)
+        } else {
+            powerup = list.removeAt(3)
+        }
+    }
+}
 // Chooses the power up possibilities
-function what_powerup (list2: number[]) {
+function _do (list2: number[]) {
     powerlist.shift()
     for (let value of list2) {
         if (info.life() == 1) {
@@ -126,10 +140,11 @@ function what_powerup (list2: number[]) {
     // what powerup the player gets
     powerup = powerlist._pickRandom()
 }
+let random = 0
 let Invincible = false
 let powerup = 0
+let list: number[] = []
 let loopcount = 0
-let text_list: number[] = []
 let powerlist: number[] = []
 let jump = 0
 let mySprite: Sprite = null
@@ -285,13 +300,13 @@ let p2 = 2
 let p3 = 3
 let p4 = 4
 powerlist = [p1]
-text_list = [
+loopcount = 0
+list = [
 p1,
 p2,
 p3,
 p4
 ]
-loopcount = 0
 game.onUpdateInterval(500, function () {
     if (mySprite.tileKindAt(TileDirection.Center, assets.tile`myTile8`)) {
         info.changeLifeBy(1)
